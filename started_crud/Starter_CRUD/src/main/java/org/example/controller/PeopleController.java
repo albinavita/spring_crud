@@ -49,17 +49,37 @@ public class PeopleController {
        return "people/new";
     }
 
-
     /**
      * Принимает на вход POST запрос
      * Будет брать данные с этого POST запроса
      * Добавляет нового чел в БД с помощью DAO
      */
-    @PostMapping
+    @PostMapping()
     public String create(@ModelAttribute("person") Person person) {
-        personDAO.save(person);
+       personDAO.save(person);
         //redirect: - это механизм перехода (на другую страницу) на далее указанную страницу
         return "redirect:/people";
     }
 
+    /**
+     * страница для редактирования человека
+     */
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("person", personDAO.show(id));
+        return "people/edit";
+    }
+
+    @PatchMapping("/{id}")
+        public String update(@ModelAttribute("person") Person person,
+                             @PathVariable("id") int id) {
+        personDAO.update(id,person);
+        return "redirect:/people";
+    }
+
+    @DeleteMapping("/{id}")
+    public String gelete(@PathVariable("id") int id) {
+        personDAO.delete(id);
+        return "redirect:/people";
+    }
 }

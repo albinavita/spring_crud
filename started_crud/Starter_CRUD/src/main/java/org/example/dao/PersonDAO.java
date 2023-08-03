@@ -38,11 +38,24 @@ public class PersonDAO {
 
         }
         return null;
-      // return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
+     // return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
     }
 
     public void save(Person person) {
+        if (person.getName() == "") {
+            return;
+        }
         person.setId(++PEOPELE_COUNT);
+
         people.add(person);
+    }
+
+    public void update(int id, Person person) {
+        Person personToBeUpdated = show(id);
+        personToBeUpdated.setName(person.getName());
+    }
+
+    public void delete(int id){
+        people.removeIf(p -> p.getId() == id);
     }
 }
