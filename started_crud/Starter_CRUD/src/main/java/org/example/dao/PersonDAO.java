@@ -20,15 +20,16 @@ public class PersonDAO {
     private List<Person> people;
     {
         people = new ArrayList<>();
-        people.add(new Person(++PEOPELE_COUNT, "Tom"));
-        people.add(new Person(++PEOPELE_COUNT, "Bob"));
-        people.add(new Person(++PEOPELE_COUNT, "Mike"));
-        people.add(new Person(++PEOPELE_COUNT, "Katy"));
+        people.add(new Person(++PEOPELE_COUNT, "Tom", 24, "tom@mail.ru"));
+        people.add(new Person(++PEOPELE_COUNT, "Bob", 27, "bob@mail.ru"));
+        people.add(new Person(++PEOPELE_COUNT, "Mike", 45, "mike@mail.ru"));
+        people.add(new Person(++PEOPELE_COUNT, "Katy", 34, "katy@mail.ru"));
     }
 //возвращает список из объектов класса Рerson
     public List<Person> index() {
         return  people;
     }
+
 //возвращает одного чел по id
     public Person show(int id) {
         for(Person person : people) {
@@ -42,9 +43,6 @@ public class PersonDAO {
     }
 
     public void save(Person person) {
-        if (person.getName() == "") {
-            return;
-        }
         person.setId(++PEOPELE_COUNT);
 
         people.add(person);
@@ -53,6 +51,8 @@ public class PersonDAO {
     public void update(int id, Person person) {
         Person personToBeUpdated = show(id);
         personToBeUpdated.setName(person.getName());
+        personToBeUpdated.setAge(person.getAge());
+        personToBeUpdated.setEmail(person.getEmail());
     }
 
     public void delete(int id){

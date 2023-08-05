@@ -1,10 +1,12 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import org.example.dao.PersonDAO;
 import org.example.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -55,7 +57,11 @@ public class PeopleController {
      * Добавляет нового чел в БД с помощью DAO
      */
     @PostMapping()
-    public String create(@ModelAttribute("person") Person person) {
+    public String create(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "people/new";
+        }
        personDAO.save(person);
         //redirect: - это механизм перехода (на другую страницу) на далее указанную страницу
         return "redirect:/people";
@@ -71,8 +77,12 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-        public String update(@ModelAttribute("person") Person person,
+        public String update(@ModelAttribute("person") @Valid Person person,
+                             BindingResult bindingResult,
                              @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()) {
+            return "people/edit";
+        }
         personDAO.update(id,person);
         return "redirect:/people";
     }
